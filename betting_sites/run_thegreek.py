@@ -1,4 +1,4 @@
-from thegreek import Football, Basketball, Hockey, Soccer, LiveSchedule, football_url, basketball_url, hockey_url, soccer_url
+from thegreek import Football, Basketball, Hockey, Soccer, LiveSchedule, LiveInPLay, football_url, basketball_url, hockey_url, soccer_url
 
 scrapeF = Football(football_url,"football")
 scrapeF.handle()
@@ -14,3 +14,6 @@ scrapeS.handle()
 
 scrapeL = LiveSchedule()
 scrapeL.handle()
+
+scrapeLIP = LiveInPLay()
+scrapeLIP.handle()

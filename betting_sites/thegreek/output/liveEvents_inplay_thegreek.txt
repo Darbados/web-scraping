@@ -1,0 +1,1 @@
+{"event1": {"league": "Argentina - Superliga", "draw": 3.52, "away": [{"awaySpread": 2.37, "period": "GamePeriod", "awayMoneyLine": 7.47}], "teams": "San Martin SJ 1-0 Defensa Y Argentina - Superliga", "time": " On Break", "home": [{"homeMoneyLine": 1.58, "homeSpread": 1.54, "period": "GamePeriod"}], "sport": "Soccer"}}

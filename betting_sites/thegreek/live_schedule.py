@@ -79,10 +79,10 @@ class LiveSchedule:
                         try:
                             for i,e in enumerate(home_el):
                                 #need this in odds format
-                                h_s = oddsFormat(e.find("li",{"class":"spread"}).findAll('a')[-1].text.replace(u'\xa0',u' ').encode('utf-8'))
-                                h_ml = oddsFormat(e.find('li',{'class':'money-line'}).a.text.replace(u'\xa0',u' ').encode('utf-8'))
-                                a_s = oddsFormat(away_el[i].find("li",{"class":"spread"}).findAll('a')[-1].text.replace(u'\xa0',u' ').encode('utf-8'))
-                                a_ml = oddsFormat(away_el[i].find('li',{'class':'money-line'}).a.text.replace(u'\xa0',u' ').encode('utf-8'))
+                                h_s = oddsFormat(e.find("li",{"class":"spread"}).findAll('a')[-1].text.replace(u'\00a0',u'').replace(u'\xa0',u'').encode('utf-8'))
+                                h_ml = oddsFormat(e.find('li',{'class':'money-line'}).a.text.replace(u'\00a0',u'').replace(u'\xa0',u'').encode('utf-8'))
+                                a_s = oddsFormat(away_el[i].find("li",{"class":"spread"}).findAll('a')[-1].text.replace(u'\00a0',u'').replace(u'\xa0',u'').encode('utf-8'))
+                                a_ml = oddsFormat(away_el[i].find('li',{'class':'money-line'}).a.text.replace(u'\00a0',u'').replace(u'\xa0',u'').encode('utf-8'))
                                 if sport == 'Soccer':
                                     draw_ml = oddsFormat(draw_el[i].find('li',{'class':'money-line'}).a.text.strip().replace('\n','').encode('utf-8'))
                                     self.structure[date][-1]["draw"] = draw_ml
@@ -105,7 +105,7 @@ class LiveSchedule:
                         a_b = []
                         for bet in additional_betts_container.findAll("div",{"class":"lines"}):
                             a_b.append({
-                                bet.find("ul",{"class":"table-head"}).li.div.a.strong.text: [{"name": x.li.a.find("span",{"class":"name"}).text.replace('\u00a0', '').encode('utf-8'), "odd": oddsFormat(x.li.a.find("span",{"class":"odd"}).text.replace('u\00a0', '').encode('utf-8'))} for x in bet.findAll("ul",{"class":"table"})]
+                                bet.find("ul",{"class":"table-head"}).li.div.a.strong.text: [{"name": x.li.a.find("span",{"class":"name"}).text.replace(u'\00a0',u'').replace(u'\xa0',u'').replace(u'\u00BD',u'0xbd').encode('utf-8'), "odd": oddsFormat(x.li.a.find("span",{"class":"odd"}).text.replace(u'\00a0',u'').replace(u'\xa0',u'').encode('utf-8'))} for x in bet.findAll("ul",{"class":"table"})]
                             })
                         self.structure[date][-1]["addBets"] = a_b
                 except Exception as e:

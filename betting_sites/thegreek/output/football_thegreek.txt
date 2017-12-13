@@ -1,0 +1,73 @@
+"Tuesday, December 12, 2017"
+{"league": "NFL", "away": "Miami Dolphins", "periods": [{"homeMoneyLine": 1.15, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 5.75}, {"homeMoneyLine": 1.3, "awaySpread": 1.83, "homeSpread": 2.0, "period": "1st Half", "awayMoneyLine": 3.7}, {"homeMoneyLine": 1.4, "awaySpread": 2.2, "homeSpread": 1.71, "period": "1st Quarter", "awayMoneyLine": 3.1}, {"homeMoneyLine": 0.0, "awaySpread": 2.1, "homeSpread": 1.77, "period": "2nd Quarter", "awayMoneyLine": 0.0}, {"homeMoneyLine": 0.0, "awaySpread": 2.3, "homeSpread": 1.67, "period": "3rd Quarter", "awayMoneyLine": 0.0}, {"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "4th Quarter", "awayMoneyLine": 0.0}], "date": "Tuesday, December 12, 2017", "home": "New England Patriots", "sport": "football"}
+{"league": "NFL-Alt", "away": "Miami Dolphins", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 3.6, "homeSpread": 1.31, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Tuesday, December 12, 2017", "home": "New England Patriots", "sport": "football"}
+{"league": "NFL-Alt", "away": "Miami Dolphins", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.4, "homeSpread": 3.1, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Tuesday, December 12, 2017", "home": "New England Patriots", "sport": "football"}
+"Friday, December 15, 2017"
+{"league": "NFL", "away": "Indianapolis Colts", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Friday, December 15, 2017", "home": "Denver Broncos", "sport": "football"}
+"Saturday, December 16, 2017"
+{"league": "College", "away": "Troy", "periods": [{"homeMoneyLine": 3.1, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.4}], "date": "Saturday, December 16, 2017", "home": "North Texas", "sport": "football"}
+{"league": "College", "away": "Western Kentucky", "periods": [{"homeMoneyLine": 3.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.42}], "date": "Saturday, December 16, 2017", "home": "Georgia State", "sport": "football"}
+{"league": "College", "away": "Boise State", "periods": [{"homeMoneyLine": 1.33, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 3.5}], "date": "Saturday, December 16, 2017", "home": "Oregon", "sport": "football"}
+{"league": "College", "away": "Colorado State", "periods": [{"homeMoneyLine": 2.85, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.44}], "date": "Saturday, December 16, 2017", "home": "Marshall", "sport": "football"}
+{"league": "NFL", "away": "Detroit Lions", "periods": [{"homeMoneyLine": 3.2, "awaySpread": 1.95, "homeSpread": 1.87, "period": "Game Period", "awayMoneyLine": 1.38}], "date": "Saturday, December 16, 2017", "home": "Chicago Bears", "sport": "football"}
+"Sunday, December 17, 2017"
+{"league": "College", "away": "Arkansas State", "periods": [{"homeMoneyLine": 2.5, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.59}], "date": "Sunday, December 17, 2017", "home": "Middle Tenn State", "sport": "football"}
+{"league": "NFL", "away": "Kansas City Chiefs", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 2.0, "homeSpread": 1.83, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "Los Angeles Chargers", "sport": "football"}
+{"league": "NFL", "away": "New York Giants", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.87, "homeSpread": 1.95, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "Philadelphia Eagles", "sport": "football"}
+{"league": "NFL", "away": "Minnesota Vikings", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "Cincinnati Bengals", "sport": "football"}
+{"league": "NFL", "away": "Jacksonville Jaguars", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "Houston Texans", "sport": "football"}
+{"league": "NFL", "away": "New Orleans Saints", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "New York Jets", "sport": "football"}
+{"league": "NFL", "away": "Washington Redskins", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "Arizona Cardinals", "sport": "football"}
+{"league": "NFL", "away": "Cleveland Browns", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.87, "homeSpread": 1.95, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "Baltimore Ravens", "sport": "football"}
+{"league": "NFL", "away": "Seattle Seahawks", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "Los Angeles Rams", "sport": "football"}
+{"league": "NFL", "away": "San Francisco 49ers", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.8, "homeSpread": 2.05, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Sunday, December 17, 2017", "home": "Tennessee Titans", "sport": "football"}
+"Monday, December 18, 2017"
+{"league": "NFL", "away": "Oakland Raiders", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Monday, December 18, 2017", "home": "Dallas Cowboys", "sport": "football"}
+"Tuesday, December 19, 2017"
+{"league": "NFL", "away": "Tampa Bay Buccaneers", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Tuesday, December 19, 2017", "home": "Atlanta Falcons", "sport": "football"}
+"Wednesday, December 20, 2017"
+{"league": "College", "away": "Florida Atlantic", "periods": [{"homeMoneyLine": 0.0, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 0.0}], "date": "Wednesday, December 20, 2017", "home": "Akron", "sport": "football"}
+"Thursday, December 21, 2017"
+{"league": "College", "away": "SMU", "periods": [{"homeMoneyLine": 2.8, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.45}], "date": "Thursday, December 21, 2017", "home": "Louisiana Tech", "sport": "football"}
+"Friday, December 22, 2017"
+{"league": "College", "away": "Florida International", "periods": [{"homeMoneyLine": 1.36, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 3.35}], "date": "Friday, December 22, 2017", "home": "Temple", "sport": "football"}
+{"league": "College", "away": "Ohio", "periods": [{"homeMoneyLine": 3.6, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.31}], "date": "Friday, December 22, 2017", "home": "Alabama Birmingham", "sport": "football"}
+{"league": "College", "away": "Wyoming", "periods": [{"homeMoneyLine": 1.91, "awaySpread": 1.87, "homeSpread": 1.95, "period": "Game Period", "awayMoneyLine": 1.91}], "date": "Friday, December 22, 2017", "home": "Central Michigan", "sport": "football"}
+"Saturday, December 23, 2017"
+{"league": "College", "away": "South Florida", "periods": [{"homeMoneyLine": 2.2, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.71}], "date": "Saturday, December 23, 2017", "home": "Texas Tech", "sport": "football"}
+"Sunday, December 24, 2017"
+{"league": "College", "away": "Toledo", "periods": [{"homeMoneyLine": 3.7, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.3}], "date": "Sunday, December 24, 2017", "home": "Appalachian State", "sport": "football"}
+"Monday, December 25, 2017"
+{"league": "College", "away": "Fresno State", "periods": [{"homeMoneyLine": 1.77, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 2.1}], "date": "Monday, December 25, 2017", "home": "Houston", "sport": "football"}
+"Tuesday, December 26, 2017"
+{"league": "College", "away": "West Virginia", "periods": [{"homeMoneyLine": 1.38, "awaySpread": 1.87, "homeSpread": 1.95, "period": "Game Period", "awayMoneyLine": 3.25}], "date": "Tuesday, December 26, 2017", "home": "Utah", "sport": "football"}
+{"league": "College", "away": "Duke", "periods": [{"homeMoneyLine": 2.7, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.5}], "date": "Tuesday, December 26, 2017", "home": "Northern Illinois", "sport": "football"}
+"Wednesday, December 27, 2017"
+{"league": "College", "away": "UCLA", "periods": [{"homeMoneyLine": 1.74, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 2.15}], "date": "Wednesday, December 27, 2017", "home": "Kansas State", "sport": "football"}
+{"league": "College", "away": "Florida State", "periods": [{"homeMoneyLine": 5.75, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.15}], "date": "Wednesday, December 27, 2017", "home": "Southern Mississippi", "sport": "football"}
+{"league": "College", "away": "Iowa", "periods": [{"homeMoneyLine": 2.3, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.67}], "date": "Wednesday, December 27, 2017", "home": "Boston College", "sport": "football"}
+"Thursday, December 28, 2017"
+{"league": "College", "away": "Texas", "periods": [{"homeMoneyLine": 1.67, "awaySpread": 1.87, "homeSpread": 1.95, "period": "Game Period", "awayMoneyLine": 2.3}], "date": "Thursday, December 28, 2017", "home": "Missouri", "sport": "football"}
+{"league": "College", "away": "Oklahoma State", "periods": [{"homeMoneyLine": 2.7, "awaySpread": 1.95, "homeSpread": 1.87, "period": "Game Period", "awayMoneyLine": 1.5}], "date": "Thursday, December 28, 2017", "home": "Virginia Tech", "sport": "football"}
+{"league": "College", "away": "Arizona", "periods": [{"homeMoneyLine": 2.5, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.59}], "date": "Thursday, December 28, 2017", "home": "Purdue", "sport": "football"}
+"Friday, December 29, 2017"
+{"league": "College", "away": "TCU", "periods": [{"homeMoneyLine": 2.25, "awaySpread": 1.87, "homeSpread": 1.95, "period": "Game Period", "awayMoneyLine": 1.69}], "date": "Friday, December 29, 2017", "home": "Stanford", "sport": "football"}
+{"league": "College", "away": "Wake Forest", "periods": [{"homeMoneyLine": 2.3, "awaySpread": 1.95, "homeSpread": 1.87, "period": "Game Period", "awayMoneyLine": 1.67}], "date": "Friday, December 29, 2017", "home": "Texas A&M", "sport": "football"}
+{"league": "College", "away": "Arizona State", "periods": [{"homeMoneyLine": 1.41, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 3.05}], "date": "Friday, December 29, 2017", "home": "North Carolina State", "sport": "football"}
+{"league": "College", "away": "Northwestern", "periods": [{"homeMoneyLine": 3.45, "awaySpread": 1.87, "homeSpread": 1.95, "period": "Game Period", "awayMoneyLine": 1.34}], "date": "Friday, December 29, 2017", "home": "Kentucky", "sport": "football"}
+{"league": "College", "away": "New Mexico State", "periods": [{"homeMoneyLine": 1.59, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 2.5}], "date": "Friday, December 29, 2017", "home": "Utah State", "sport": "football"}
+{"league": "College", "away": "Washington State", "periods": [{"homeMoneyLine": 2.35, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.65}], "date": "Friday, December 29, 2017", "home": "Michigan State", "sport": "football"}
+"Saturday, December 30, 2017"
+{"league": "College", "away": "Ohio State", "periods": [{"homeMoneyLine": 3.3, "awaySpread": 1.87, "homeSpread": 1.95, "period": "Game Period", "awayMoneyLine": 1.37}], "date": "Saturday, December 30, 2017", "home": "Southern Cal", "sport": "football"}
+{"league": "College", "away": "Mississippi State", "periods": [{"homeMoneyLine": 1.4, "awaySpread": 1.95, "homeSpread": 1.87, "period": "Game Period", "awayMoneyLine": 3.1}], "date": "Saturday, December 30, 2017", "home": "Louisville", "sport": "football"}
+{"league": "College", "away": "Memphis", "periods": [{"homeMoneyLine": 2.5, "awaySpread": 1.95, "homeSpread": 1.87, "period": "Game Period", "awayMoneyLine": 1.59}], "date": "Saturday, December 30, 2017", "home": "Iowa State", "sport": "football"}
+{"league": "College", "away": "Penn State", "periods": [{"homeMoneyLine": 2.2, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.71}], "date": "Saturday, December 30, 2017", "home": "Washington", "sport": "football"}
+"Sunday, December 31, 2017"
+{"league": "College", "away": "Miami Florida", "periods": [{"homeMoneyLine": 1.4, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 3.1}], "date": "Sunday, December 31, 2017", "home": "Wisconsin", "sport": "football"}
+"Monday, January 01, 2018"
+{"league": "College", "away": "Michigan", "periods": [{"homeMoneyLine": 3.5, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.33}], "date": "Monday, January 01, 2018", "home": "South Carolina", "sport": "football"}
+{"league": "College", "away": "Auburn", "periods": [{"homeMoneyLine": 3.9, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 1.29}], "date": "Monday, January 01, 2018", "home": "Central Florida", "sport": "football"}
+{"league": "College", "away": "Notre Dame", "periods": [{"homeMoneyLine": 1.67, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 2.3}], "date": "Monday, January 01, 2018", "home": "LSU", "sport": "football"}
+{"league": "College", "away": "Oklahoma", "periods": [{"homeMoneyLine": 1.8, "awaySpread": 1.91, "homeSpread": 1.91, "period": "Game Period", "awayMoneyLine": 2.05}], "date": "Monday, January 01, 2018", "home": "Georgia", "sport": "football"}
+"Tuesday, January 02, 2018"
+{"league": "College", "away": "Clemson", "periods": [{"homeMoneyLine": 1.69, "awaySpread": 2.0, "homeSpread": 1.83, "period": "Game Period", "awayMoneyLine": 2.25}], "date": "Tuesday, January 02, 2018", "home": "Alabama", "sport": "football"}
