@@ -1,176 +1,106 @@
-import requests
-import json
-import re
+import requests, json, re, os, sys, random, time, traceback
+from datetime import datetime
+
+PROXIES = ['46.4.10.204:3369', '46.4.10.204:3370', '46.4.10.204:3365', '46.4.10.204:3366', '46.4.10.204:3367', '46.4.10.204:3368']
 
 class Sports:
-    def __init__(self, url, sport, filename):
-        self.url = url
+    def __init__(self, sport, timesleep, period):
         self.sport = sport
-        self.response = {}
-        self.in_event_bets = {}
-        self.structure = {"STARTED": {"sport": {}}, "NOT STARTED": {"sport": {}}}
-        self.filename = filename
-
-    def printSomething(self, *args):
-        print ', '.join(args)
+        self.timesleep = timesleep
+        self.session = requests.Session()
+        self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36"}
+        self.DOMAINS = ['e1-api.kambi.com', 'e1-api.kambicdn.com', 'e2-api.kambi.com', 'e3-api.kambi.com', 'e4-api.kambi.com']
+        self.domain = self.DOMAINS[0]
+        self.proxy = random.choice(PROXIES)
+        self.period = period
+        self.URLS = {
+            'soccer': {
+                'ft': {
+                    'ml_ft':'https://{}/offering/api/v3/ub/listView/football.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&categoryGroup=COMBINED&category=match'
+                },
+                'fh': {
+                    'ml_fh': 'https://{}/offering/api/v3/ub/listView/football.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&categoryGroup=BET_OFFER_CATEGORY_SELECTION&category=Half%20Time',
+                    'ou': 'https://{}/offering/api/v3/ub/listView/football.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&categoryGroup=BET_OFFER_CATEGORY_SELECTION&category=Total%20Goals%20-%201st%20Half'
+                }
+            }
+        }
 
     def get_data(self, url):
-        req = requests.get(url)
-        self.response = req.json()
+        req_cont = requests.get(url.format(self.domain), headers=self.headers).content
 
-    def get_event_data(self,url):
-        req = requests.get(url)
-        self.in_event_bets = req.json()
+        try:
+            data = json.loads(req_cont)['events']
+        except:
+            if '410 Content may have moved' in req_cont:
+                for dmn in self.DOMAINS:
+                    self.domain = dmn
+                    req_cont = requests.get(url.format(self.domain), headers=self.headers).content
 
-    def saveStructure(self, data, structure):
-        for i,event in enumerate(data["events"]):
-            event_id = event["event"]["id"]
-            sport = event["event"]["sport"]
-            state = event["event"]["state"]
-            name = event["event"]["name"]
-            homeName = event["event"]["homeName"]
-            awayName = (event["event"]["awayName"] if event["event"].has_key("awayName") else 'None')
+                    if '410 Content may have moved' not in req_cont:
+                        break
+                data = json.loads(req_cont)['events']
+            else:
+                try:
+                    self.proxy = random.choice([x for x in PROXIES if x != self.proxy])
+                    r_cont = requests.get(url.format(self.domain), headers=self.headers).content
+                    data = json.loads(r_cont)['events']
+                except:
+                    print r_cont
+        return data
 
-            if sport == self.sport:
-                if state == "STARTED":
-                    if not structure["STARTED"]["sport"].has_key(sport):
-                        structure["STARTED"]["sport"][sport] = []
-                        structure["STARTED"]["sport"][sport].append({
-                            "name": name.encode('utf-8'),
-                            "homeName": homeName.encode('utf-8'),
-                            "awayName": awayName.encode('utf-8'),
-                            "path": [{"name": x["name"], "termKey": x["termKey"]} for x in event["event"]["path"]],
-                            "openForLiveBetting": (event["event"]["openForLiveBetting"] if event["event"].has_key('openForLiveBetting') else '')
-                        })
-                        try:
-                            offers = []
-                            in_live_event_bets = "https://e1-api.aws.kambicdn.com/offering/api/v2/ub/betoffer/live/event/{0}.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&ncid={1}".format(event_id,r'\d+')
-                            self.get_event_data(in_live_event_bets)
-                            for bet in self.in_event_bets["betoffers"]:
-                                offers.append({
-                                    "live": (bet["live"] if bet.has_key("live") else None),
-                                    "label": (bet["criterion"]["label"] if bet.has_key("criterion") and bet["criterion"].has_key("label") else None),
-                                    "betOfferType": (bet["betOfferType"]["name"] if bet.has_key("betOfferType") else None),
-                                    "cashIn": (bet["cashIn"] if bet.has_key("cashIn") else None),
-                                    "outcomes": ([{
-                                        "label": x["label"],
-                                        "odds": x["odds"],
-                                        "status": x["status"]
-                                    } for x in bet["outcomes"]] if bet.has_key("outcomes") else None)
-                                })
-                            structure["STARTED"]["sport"][sport][0]["betOffers"] = offers
-                        except Exception as e:
-                            structure["STARTED"]["sport"][sport][0]["betOffers"] = ["None offers to bet"]
+    def scrape_soccer(self, is_live):
+        json_events = []
+        for url in [self.URLS['soccer']['ft']['ml_ft'], self.URLS['soccer']['fh']['ml_fh'], self.URLS['soccer']['fh']['ou']]:
+            data = self.get_data(url)
+            json_events += data
 
-                        if event.has_key("liveData"):
-                            structure["STARTED"]["sport"][event["event"]["sport"]][0]["liveData"] = {
-                                "matchClock": (event["liveData"]["matchClock"] if event["liveData"].has_key("matchClock") else ''),
-                                "score": (event["liveData"]["score"] if event["liveData"].has_key("score") else ''),
-                                "open": event["liveData"]["open"]
-                            }
-                    else:
-                        index = len(structure["STARTED"]["sport"][sport])
-                        structure["STARTED"]["sport"][sport].append({
-                            "name": name.encode('utf-8'),
-                            "homeName": homeName.encode('utf-8'),
-                            "awayName": awayName.encode('utf-8'),
-                            "path": [{"name": x["name"], "termKey": x["termKey"]} for x in event["event"]["path"]],
-                            "openForLiveBetting": (event["event"]["openForLiveBetting"] if event["event"].has_key('openForLiveBetting') else '')
-                        })
-                        try:
-                            offers = []
-                            in_live_event_bets = "https://e1-api.aws.kambicdn.com/offering/api/v2/ub/betoffer/live/event/{0}.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&ncid={1}".format(event_id,r'\d+')
-                            self.get_event_data(in_live_event_bets)
-                            for bet in self.in_event_bets["betoffers"]:
-                                offers.append({
-                                    "live": (bet["live"] if bet.has_key("live") else None),
-                                    "label": (bet["criterion"]["label"] if bet.has_key("criterion") and bet["criterion"].has_key("label") else None),
-                                    "betOfferType": (bet["betOfferType"]["name"] if bet.has_key("betOfferType") else None),
-                                    "cashIn": (bet["cashIn"] if bet.has_key("cashIn") else None),
-                                    "outcomes": ([{
-                                        "label": x["label"],
-                                        "odds": x["odds"],
-                                        "status": x["status"]
-                                    } for x in bet["outcomes"]] if bet.has_key("outcomes") else None)
-                                })
-                            structure["STARTED"]["sport"][sport][-1]["betOffers"] = offers
-                        except Exception as e:
-                            structure["STARTED"]["sport"][sport][-1]["betOffers"] = ["None offers to bet"]
+        events = {}
+        for event in json_events:
+            ev_id = event["event"]["id"]
+            en_name = event["event"]["englishName"].encode("utf-8")
+            ev_home_name = event["event"]["homeName"].encode("utf-8")
+            ev_away_name = event["event"]["awayName"].encode("utf-8")
+            ev_league_title = ' - '.join([x["englishName"].encode("utf-8") for x in event["event"]["path"][1:]])
+            ev_start_date = datetime.fromtimestamp(event["event"]["start"]/1000).strftime("%Y-%m-%d %H:%M:%S")
+            key = "{}|||{}|||{}|||{}".format(self.sport, ev_league_title, ev_home_name, ev_away_name)
+            e = {}
+            e["id"] = ev_id
+            e["name"] = en_name
+            e["homeName"] = ev_home_name
+            e["awayName"] = ev_away_name
+            e["startTime"] = ev_start_date
+            events[key] = e
 
-                        if event.has_key("liveData"):
-                            structure["STARTED"]["sport"][event["event"]["sport"]][-1]["liveData"] = {
-                                "matchClock": (event["liveData"]["matchClock"] if event["liveData"].has_key("matchClock") else ''),
-                                "score": (event["liveData"]["score"] if event["liveData"].has_key("score") else ''),
-                                "open": event["liveData"]["open"]
-                            }
-                else:
-                    if not structure["NOT STARTED"]["sport"].has_key(sport):
-                        structure["NOT STARTED"]["sport"][sport] = []
-                        structure["NOT STARTED"]["sport"][sport].append({
-                            "counter": len(structure["NOT STARTED"]["sport"][sport]),
-                            "name": name,
-                            "homeName": homeName.encode('utf-8'),
-                            "awayName": awayName.encode('utf-8'),
-                            "path": [{"name": x["name"], "termKey": x["termKey"]} for x in event["event"]["path"]],
-                            "openForLiveBetting": (event["event"]["openForLiveBetting"] if event["event"].has_key("openForLiveBetting") else False)
-                        })
-                        try:
-                            offers = []
-                            in_event_bets = "https://e1-api.aws.kambicdn.com/offering/api/v2/ub/betoffer/event/{0}.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&ncid={1}".format(event_id,r'\d+')
-                            self.get_event_data(in_event_bets)
-                            for bet in self.in_event_bets["betoffers"]:
-                                offers.append({
-                                    "live": (bet["live"] if bet.has_key("live") else None),
-                                    "label": (bet["criterion"]["label"] if bet.has_key("criterion") and bet["criterion"].has_key("label") else None),
-                                    "betOfferType": (bet["betOfferType"]["name"] if bet.has_key("betOfferType") else None),
-                                    "cashIn": (bet["cashIn"] if bet.has_key("cashIn") else None),
-                                    "outcomes": ([{
-                                        "label": x["label"],
-                                        "odds": x["odds"],
-                                        "status": x["status"]
-                                    } for x in bet["outcomes"]] if bet.has_key("outcomes") else None)
-                                })
-                            structure["NOT STARTED"]["sport"][sport][-1]["betOffers"] = offers
-                        except Exception as e:
-                            structure["STARTED"]["sport"][sport][-1]["betOffers"] = ["None offers to bet"]
-                    else:
-                        index = len(structure["NOT STARTED"]["sport"][sport])
-                        structure["NOT STARTED"]["sport"][sport].append({
-                            "name": name,
-                            "homeName": homeName.encode('utf-8'),
-                            "awayName": awayName.encode('utf-8'),
-                            "path": [{"name": x["name"], "termKey": x["termKey"]} for x in event["event"]["path"]],
-                            "openForLiveBetting": (event["event"]["openForLiveBetting"] if event["event"].has_key("openForLiveBetting") else False)
-                        })
-                        try:
-                            offers = []
-                            in_event_bets = "https://e1-api.aws.kambicdn.com/offering/api/v2/ub/betoffer/event/{0}.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&ncid={1}".format(event_id,r'\d+')
-                            self.get_event_data(in_event_bets)
-                            for bet in self.in_event_bets["betoffers"]:
-                                offers.append({
-                                    "live": (bet["live"] if bet.has_key("live") else None),
-                                    "label": (bet["criterion"]["label"] if bet.has_key("criterion") and bet["criterion"].has_key("label") else None),
-                                    "betOfferType": (bet["betOfferType"]["name"] if bet.has_key("betOfferType") else None),
-                                    "cashIn": (bet["cashIn"] if bet.has_key("cashIn") else None),
-                                    "outcomes": ([{
-                                        "label": x["label"],
-                                        "odds": x["odds"],
-                                        "status": x["status"]
-                                    } for x in bet["outcomes"]] if bet.has_key("outcomes") else None)
-                                })
-                            structure["NOT STARTED"]["sport"][sport][-1]["betOffers"] = offers
-                        except Exception as e:
-                            structure["STARTED"]["sport"][sport][-1]["betOffers"] = ["None offers to bet"]
+        return events
 
-    def saveInFile(self, structure, filename):
-        f = open('unibet/output/%s.txt' %(filename), 'w')
-        structure = json.dumps(structure)
-        f.write(structure)
-        f.close()
+    def scrape_soccer_prematch(self):
+        return self.scrape_soccer(False)
+
+
+    def saveInFile(self, data):
+        try:
+            dirname = os.path.abspath(os.path.join("E:\Projects\Mine\web-scraping\Betting_sites", "unibet/results"))
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
+            filename = '{}/{}_{}.json'.format(dirname, self.sport, self.period)
+            with open(filename, "w") as outfile:
+                json.dump(data, outfile, ensure_ascii=False)
+                print "FILENAME: {}".format(filename)
+            return filename
+        except:
+            traceback.print_exc()
+            print "PROBLEM WITH SAVING THE FILE"
 
     def handle(self):
-        print "============START SCRAPING============="
-        self.get_data(self.url)
-        self.saveStructure(self.response, self.structure)
-        self.saveInFile(self.structure, self.filename)
-        print "============END SCRAPING============="
+        while True:
+            print "============START SCRAPING============="
+            start_time = datetime.now()
+            method_call = 'scrape_{}_{}'.format(self.sport, self.period)
+            data = getattr(self, method_call)()
+
+            self.saveInFile(data)
+            end_time = datetime.now()
+            iteration_time = (end_time - start_time).seconds
+            print iteration_time
+            print "============END SCRAPING============="
+            time.sleep(self.timesleep)
