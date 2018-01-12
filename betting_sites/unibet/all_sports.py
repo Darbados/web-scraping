@@ -189,16 +189,18 @@ class Sports:
             print "PROBLEM WITH SAVING THE FILE"
 
     def handle(self):
+        general_time = datetime.now()
         while True:
             print "============START SCRAPING============="
             start_time = datetime.now()
             method_call = 'scrape_{}_{}'.format(self.sport.lower(), self.period)
             data = getattr(self, method_call)()
-
+            if ((start_time-general_time).seconds > 4*60*60) or len(data.keys()) == 0:
+                sys.exit()
             self.saveInFile(data)
             end_time = datetime.now()
             iteration_time = (end_time - start_time).seconds
             print "Scraping time: {} seconds".format(iteration_time)
             print "============END SCRAPING============="
             print "Will sleep for {} seconds".format(self.timesleep - iteration_time)
-            time.sleep(self.timesleep)
+            time.sleep(self.timesleep-iteration_time)
