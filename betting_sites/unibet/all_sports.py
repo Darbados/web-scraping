@@ -56,6 +56,9 @@ class Sports:
         return data
 
     def scrape_soccer(self, is_live):
+
+        print "TEST COMMENT"
+
         json_events = []
         for url in [self.URLS['soccer']['ft']['ml_ft'], self.URLS['soccer']['fh']['ml_fh'], self.URLS['soccer']['fh']['ou']]:
             data = self.get_data(url)
