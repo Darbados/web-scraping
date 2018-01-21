@@ -1,6 +1,8 @@
 import requests, json, re, os, sys, random, time, traceback
 from datetime import datetime
 
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
 PROXIES = ['46.4.10.204:3369', '46.4.10.204:3370', '46.4.10.204:3365', '46.4.10.204:3366', '46.4.10.204:3367', '46.4.10.204:3368']
 PERIODS_MAP = {
     'soccer': {
@@ -8,6 +10,7 @@ PERIODS_MAP = {
         '2nd half': '2H'
     }
 }
+
 
 
 class Sports:
@@ -33,7 +36,7 @@ class Sports:
         }
 
     def get_data(self, url):
-        req_cont = requests.get(url.format(self.domain), headers=self.headers).content
+        req_cont = self.session.get(url.format(self.domain), headers=self.headers).content
 
         try:
             data = json.loads(req_cont)['events']
@@ -179,7 +182,7 @@ class Sports:
 
     def saveInFile(self, data):
         try:
-            dirname = os.path.abspath(os.path.join("E:\Projects\Mine\web-scraping\Betting_sites", "unibet/results"))
+            dirname = os.path.abspath(os.path.join(BASE_DIR, "results"))
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
             filename = '{}/{}_{}.json'.format(dirname, self.sport, self.period)
