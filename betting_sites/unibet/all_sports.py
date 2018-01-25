@@ -19,6 +19,7 @@ class Sports:
         self.timesleep = timesleep
         self.session = requests.Session()
         self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36"}
+        self.session.headers.update(self.headers)
         self.DOMAINS = ['e1-api.kambi.com', 'e1-api.kambicdn.com', 'e2-api.kambi.com', 'e3-api.kambi.com', 'e4-api.kambi.com']
         self.domain = self.DOMAINS[0]
         self.proxy = random.choice(PROXIES)
@@ -31,20 +32,26 @@ class Sports:
                 'fh': {
                     'ml_fh': 'https://{}/offering/api/v3/ub/listView/football.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&categoryGroup=BET_OFFER_CATEGORY_SELECTION&category=Half%20Time',
                     'ou': 'https://{}/offering/api/v3/ub/listView/football.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&categoryGroup=BET_OFFER_CATEGORY_SELECTION&category=Total%20Goals%20-%201st%20Half'
+                },
+                'hdp': {
+                    'ml_ft': 'https://{}/offering/api/v3/ub/listView/football.json?lang=en_GB&market=ZZ&client_id=2&channel_id=1&categoryGroup=BET_OFFER_CATEGORY_SELECTION&category=Asian%20Handicap'
                 }
             }
         }
 
     def get_data(self, url):
-        req_cont = self.session.get(url.format(self.domain), headers=self.headers).content
+        formatted_url = url.format(self.domain)
+        print formatted_url
+        req_cont = self.session.get(url.format(self.domain), proxies={'https:': self.proxy, 'http:': self.proxy}).content
 
         try:
             data = json.loads(req_cont)['events']
+            print "Events available: {}".format(len(data))
         except:
             if '410 Content may have moved' in req_cont:
                 for dmn in self.DOMAINS:
                     self.domain = dmn
-                    req_cont = requests.get(url.format(self.domain), headers=self.headers).content
+                    req_cont = requests.get(url.format(self.domain), headers=self.headers, proxies={'http:': self.proxy, 'https:': self.proxy}).content
 
                     if '410 Content may have moved' not in req_cont:
                         break
@@ -52,22 +59,18 @@ class Sports:
             else:
                 try:
                     self.proxy = random.choice([x for x in PROXIES if x != self.proxy])
-                    r_cont = requests.get(url.format(self.domain), proxies={'http': self.proxy, 'https': self.proxy}, headers=self.headers).content
+                    r_cont = self.session.get(url.format(self.domain), proxies={'http': self.proxy, 'https': self.proxy}, headers=self.headers).content
                     data = json.loads(r_cont)['events']
                 except:
-                    print r_cont
+                    print traceback.print_exc()
         return data
 
     def scrape_soccer(self, is_live):
-
-        print "TEST COMMENT"
-
         json_events = []
-        for url in [self.URLS['soccer']['ft']['ml_ft'], self.URLS['soccer']['fh']['ml_fh'], self.URLS['soccer']['fh']['ou']]:
+        for url in [self.URLS['soccer']['ft']['ml_ft'], self.URLS['soccer']['fh']['ml_fh'], self.URLS['soccer']['fh']['ou'], self.URLS['soccer']['hdp']['ml_ft']]:
             data = self.get_data(url)
             json_events += data
 
-        print "Events count: {}".format(len(json_events))
 
         events = {}
         for event in json_events:
@@ -77,102 +80,61 @@ class Sports:
             else:
                 if event['event']['state'] == 'STARTED':
                     continue
-            if event["event"]["id"] in events:
-                e = events[event["event"]["id"]]
+
+            leagueTitle = ' - '.join([x["englishName"] for x in event["path"][1:]])
+            homeTitle = event["homeName"]
+            awayTitle = event["awayName"]
+            start_date = datetime.fromtimestamp(event["start"]/1000).strftime("%d-%m-%Y %H:%M:%S")
+            sport_title = self.sport
+            ev = {
+                "sport_title": sport_title,
+                "league_title": leagueTitle,
+                "home_title": homeTitle,
+                "away_title": awayTitle,
+                "start_date": start_date,
+                "markets_data": {}
+            }
+            if len(event["betOffers"]) == 0:
+                continue
             else:
-                ev_id = event["event"]["id"]
-                ev_name = event["event"]["englishName"].encode("utf-8")
-                ev_home_name = event["event"]["homeName"].encode("utf-8")
-                ev_away_name = event["event"]["awayName"].encode("utf-8")
-                ev_league_title = ' - '.join([x["englishName"].encode("utf-8") for x in event["event"]["path"][1:]])
-                ev_start_date = datetime.fromtimestamp(event["event"]["start"]/1000).strftime("%Y-%m-%d %H:%M:%S")
-                ev_started = (1 if event["event"]["state"] == "STARTED" else 0)
-                e = {
-                    "id": ev_id,
-                    "name": ev_name,
-                    "homeName": ev_home_name,
-                    "awayName": ev_away_name,
-                    "startTime": ev_start_date,
-                    "started": ev_started,
-                    "league_title": ev_league_title,
-                    "markets_data": {}
-                }
+                for bet in event["betOffers"]:
+                    if bet["betOfferType"]["name"].lower() == 'match' and bet["criterion"]["label"].lower() == 'full time':
+                        period = "ft"
+                        mkt = {
+                            "market_type": "ml",
+                            "option_index": int(bet["sortOrder"]),
+                            "odd_home": {
+                                "external": {
+                                    "home_title": ev["home_title"],
+                                    "away_title": ev["away_title"],
+                                    "league_title": ev["league_title"]
+                                },
+                                "value": float(bet["outcomes"][0]["odds"]/1000)
+                            },
+                            "odd_away": {
+                                "external": {
+                                    "home_title": ev["home_title"],
+                                    "away_title": ev["away_title"],
+                                    "league_title": ev["league_title"]
+                                },
+                                "value": float(bet["outcomes"][2]["odds"] / 1000)
+                            },
+                            "odd_draw": {
+                                "external": {
+                                    "home_title": ev["home_title"],
+                                    "away_title": ev["away_title"],
+                                    "league_title": ev["league_title"]
+                                },
+                                "value": float(bet["outcomes"][1]["odds"] / 1000)
+                            }
+                        }
+                    if period not in ev["markets_data"]:
+                        ev["markets_data"][period] = []
+                    ev["markets_data"][period].append(mkt)
+                #if is_live:
 
-            for bet in event["betOffers"]:
-                if len(bet["outcomes"]) == 0:
-                    continue
-                if bet["betOfferType"]["name"].lower() == "match" and bet["criterion"]["label"].lower() == "full time":
-                    if not "ft" in e["markets_data"]:
-                        e["markets_data"]["ft"] = {"ml": {}}
-                    else:
-                        e["markets_data"]["ft"]["ml"] = {}
-                    odd_home = float(bet["outcomes"][0]["odds"])/1000
-                    odd_draw = float(bet["outcomes"][1]["odds"])/1000
-                    odd_away = float(bet["outcomes"][2]["odds"])/1000
-
-                    e["markets_data"]["ft"]["ml"] = {
-                        "homeName": e["homeName"],
-                        "awayName": e["awayName"],
-                        "odd_home": odd_home,
-                        "odd_draw": odd_draw,
-                        "odd_away": odd_away
-                    }
-                elif bet["betOfferType"]["name"].lower() == "over/under" and bet["criterion"][
-                    "label"].lower() == "total goals":
-                    if not "ft_ou" in e["markets_data"]:
-                        e["markets_data"]["ft_ou"] = {"ml": {}}
-                    else:
-                        e["markets_data"]["ft_ou"]["ml"] = {}
-                    odd_over = float(bet["outcomes"][0]["odds"]) / 1000
-                    odd_under = float(bet["outcomes"][1]["odds"]) / 1000
-                    spread_line = float(bet["outcomes"][1]["line"]) / 1000
-
-                    e["markets_data"]["ft_ou"]["ml"] = {
-                        "homeName": e["homeName"],
-                        "awayName": e["awayName"],
-                        "odd_over": odd_over,
-                        "odd_under": odd_under,
-                        "spread": spread_line
-                    }
-                elif bet["betOfferType"]["name"].lower() == "match" and bet["criterion"][
-                    "label"].lower() == "half time":
-                    if not "fh" in e["markets_data"]:
-                        e["markets_data"]["fh"] = {"ml": {}}
-                    else:
-                        e["markets_data"]["fh"]["ml"] = {}
-                    odd_home = float(bet["outcomes"][0]["odds"]) / 1000
-                    odd_draw = float(bet["outcomes"][1]["odds"]) / 1000
-                    odd_away = float(bet["outcomes"][2]["odds"]) / 1000
-
-                    e["markets_data"]["fh"]["ml"] = {
-                        "homeName": e["homeName"],
-                        "awayName": e["awayName"],
-                        "odd_home": odd_home,
-                        "odd_draw": odd_draw,
-                        "odd_away": odd_away
-                    }
-                else:
-                    continue
-                if is_live:
-                    e["liveData"] = {}
-                    score = {
-                        "home": event["liveData"]["score"]["home"],
-                        "away": event["liveData"]["score"]["away"],
-                    }
-                    liveMinute = event["liveData"]["matchClock"]["minute"] if event["liveData"]["matchClock"]["period"] == '1st half' else event["liveData"]["matchClock"]["minute"] - 45
-                    period = '1H' if PERIODS_MAP[self.sport.lower()] == '1st half' else '2H' if PERIODS_MAP[self.sport.lower()] == '2nd half' else 'HT' if liveMinute == 0 and event["liveData"]["matchClock"]["period"] != '1st half' else 'LIVE'
-                    statisticsHome = event["liveData"]["statistics"]["football"]["home"]
-                    statisticsAway = event["liveData"]["statistics"]["football"]["away"]
-
-                    e["liveData"]["score"] = score
-                    e["liveData"]["minute"] = liveMinute
-                    e["liveData"]["period"] = period
-                    e["liveData"]["statistics"] = {
-                        "home": statisticsHome,
-                        "away": statisticsAway
-                    }
-
-                events[event["event"]["id"]] = e
+            key = "{}${}${}${}".format(self.sport, leagueTitle, homeTitle, awayTitle)
+            events[key] = ev
         return events
 
     def scrape_soccer_prematch(self):
