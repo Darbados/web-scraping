@@ -81,10 +81,10 @@ class Sports:
                 if event['event']['state'] == 'STARTED':
                     continue
 
-            leagueTitle = ' - '.join([x["englishName"] for x in event["path"][1:]])
-            homeTitle = event["homeName"]
-            awayTitle = event["awayName"]
-            start_date = datetime.fromtimestamp(event["start"]/1000).strftime("%d-%m-%Y %H:%M:%S")
+            leagueTitle = (' - '.join([x["englishName"] for x in event["event"]["path"]])).encode('utf-8')
+            homeTitle = event["event"]["homeName"].encode('utf-8')
+            awayTitle = event["event"]["awayName"].encode('utf-8')
+            start_date = datetime.fromtimestamp(event["event"]["start"]/1000).strftime("%d-%m-%Y %H:%M:%S")
             sport_title = self.sport
             ev = {
                 "sport_title": sport_title,
@@ -128,9 +128,9 @@ class Sports:
                                 "value": float(bet["outcomes"][1]["odds"] / 1000)
                             }
                         }
-                    if period not in ev["markets_data"]:
-                        ev["markets_data"][period] = []
-                    ev["markets_data"][period].append(mkt)
+                if period not in ev["markets_data"]:
+                    ev["markets_data"][period] = []
+                ev["markets_data"][period].append(mkt)
                 #if is_live:
 
             key = "{}${}${}${}".format(self.sport, leagueTitle, homeTitle, awayTitle)
