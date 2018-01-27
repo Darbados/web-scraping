@@ -102,14 +102,14 @@ class Sports:
                         period = "ft"
                         mkt = {
                             "market_type": "ml",
-                            "option_index": int(bet["sortOrder"]),
+                            "option_index": len(ev["markets_data"][period]),
                             "odd_home": {
                                 "external": {
                                     "home_title": ev["home_title"],
                                     "away_title": ev["away_title"],
                                     "league_title": ev["league_title"]
                                 },
-                                "value": float(bet["outcomes"][0]["odds"]/1000)
+                                "value": float(bet["outcomes"][0]["odds"])/1000
                             },
                             "odd_away": {
                                 "external": {
@@ -117,7 +117,7 @@ class Sports:
                                     "away_title": ev["away_title"],
                                     "league_title": ev["league_title"]
                                 },
-                                "value": float(bet["outcomes"][2]["odds"] / 1000)
+                                "value": float(bet["outcomes"][2]["odds"])/1000
                             },
                             "odd_draw": {
                                 "external": {
@@ -125,12 +125,38 @@ class Sports:
                                     "away_title": ev["away_title"],
                                     "league_title": ev["league_title"]
                                 },
-                                "value": float(bet["outcomes"][1]["odds"] / 1000)
+                                "value": float(bet["outcomes"][1]["odds"])/1000
                             }
                         }
-                if period not in ev["markets_data"]:
-                    ev["markets_data"][period] = []
-                ev["markets_data"][period].append(mkt)
+                        if period not in ev["markets_data"]:
+                            ev["markets_data"][period] = []
+                        ev["markets_data"][period].append(mkt)
+                    elif bet["betOfferType"]["name"].lower() == 'over/under' and bet["criterion"]["label"].lower() == 'total goals':
+                        period = "ft"
+                        mkt = {
+                            "market_type": "ou",
+                            "option_index": len(ev["markets_data"][period]),
+                            "spread": float(bet["outcomes"][0]["line"])/1000,
+                            "odd_over": {
+                                "external": {
+                                    "home_title": ev["home_title"],
+                                    "away_title": ev["away_title"],
+                                    "league_title": ev["league_title"]
+                                },
+                                "value": float(bet["outcomes"][0]["odds"])/1000
+                            },
+                            "odd_under": {
+                                "external": {
+                                    "home_title": ev["home_title"],
+                                    "away_title": ev["away_title"],
+                                    "league_title": ev["league_title"]
+                                },
+                                "value": float(bet["outcomes"][1]["odds"])/1000
+                            }
+                        }
+                        if period not in ev["markets_data"]:
+                            ev["markets_data"][period] = []
+                        ev["markets_data"][period].append(mkt)
                 #if is_live:
 
             key = "{}${}${}${}".format(self.sport, leagueTitle, homeTitle, awayTitle)
